@@ -16,7 +16,7 @@ define( "TUITION", "Tuition");
 define( "SECONDPAYMENTDATE", "-17 day");
 define( "LTSECONDPAYMENT", "+38 day");
 
-
+define("LTPCKFIRSTPAYMENT",250);
 
 class Calculator{
 	private $fee;
@@ -40,12 +40,12 @@ class Calculator{
 	
 
 	public function __construct($selectedCourseNameNStartDate,$paymentOption, $receive){
-			//$this->courseStartDates= array();
+	
 		$this->receivedata = $receive;
 		$this->fee = new Fee();
 		$this->dataHandler = new Datahandler();
 
-		//$this->studentDetail = new StudentDetail();
+	
 		$this->paymentOption = $paymentOption;
 		$this->selectedCourseNameNStartDate =$selectedCourseNameNStartDate;
 		$this->paymentPlan = array();
@@ -55,7 +55,7 @@ class Calculator{
 
 		$this->checkMatEnrolFee();
 		if(count($this->selectedCourseNameNStartDate) ==1){
-			//$this->error .="<br/> single <br/>";
+		
 			if($this->paymentOption ==4){
 				$this->calculate4();
 			}
@@ -64,21 +64,24 @@ class Calculator{
 		} else{
 			switch ($this->paymentOption) {
 				case 1:
-				//$this->error .="hello1<br/>";
+	
 				$this->calculate1();
 
 				break;
 				case 2:
-				//$this->error .="hello2<br/>";
+	
 				$this->calculate2();
 				break;
 				case 3:
-				//$this->error .="hello3<br/>";
+	
 				$this->calculate3();
 				break;
 				case 4:
 				$this->calculate4();
-				//echo "hello cal4";
+				break;
+
+				case 5:
+				$this->calculate5();
 				break;
 
 			}
@@ -106,7 +109,7 @@ class Calculator{
 		$this->selectedCourseDataDetail = array();
 
 		foreach ($this->selectedCourseNameNStartDate as $value) {	
-			if($value[0]=="Diploma of Business" && ($value[1] == "20/11/2017" ||$value[1] == "08/01/2018" ||$value[1] == "26/02/2018" )){
+	/*		if($value[0]=="Diploma of Business" && ($value[1] == "20/11/2017" ||$value[1] == "08/01/2018" ||$value[1] == "26/02/2018" )){
 				$tempCourse = $this->dataHandler->getCourseDataByName($value[0]);
 
 				
@@ -115,7 +118,7 @@ class Calculator{
 				
 				$this->selectedCourseDataDetail[] = $tempCourse;	
 			} else
-			$this->selectedCourseDataDetail[]= $this->dataHandler->getCourseDataByName($value[0]);
+	*/		$this->selectedCourseDataDetail[]= $this->dataHandler->getCourseDataByName($value[0]);
 		}
 
 
@@ -259,6 +262,20 @@ class Calculator{
                 }
                 $this->finalPaymentplan[]= new Outputform("Total", "", $this->total);
 	}
+	private function checkDiscount($tuition){
+		$courseCnt =count($tuition);
+
+		if($this->receivedata->getuseDiscountFlag()){
+			$tuition[$courseCnt-1]-=$this->receivedata->getDiscount();
+		}elseif($courseCnt==2){
+			$tuition[$courseCnt-1] -= $this->fee->package;
+		}elseif ($courseCnt >=3) {
+			# code...
+			$tuition[$courseCnt-1] -= $this->fee->package1;
+		}
+
+		return $tuition;
+	}
 
 	public function calculate1(){	
 		$tuition = array() ;
@@ -285,20 +302,14 @@ class Calculator{
 		}
 		
 		
-		// get course count;
-		
-		$courseCnt =count($tuition);
 		
 		
+
+		// check discount.
+		$courseCnt =count($tuition);$courseCnt =count($tuition);
+		$tuition = $this->checkDiscount($tuition);
 		// deduct course special price.
 		
-		if($courseCnt==2){
-		$tuition[$courseCnt-1] -= $this->fee->package;
-		}elseif ($courseCnt >=3) {
-			# code...
-			$tuition[$courseCnt-1] -= $this->fee->package1;
-		}
-
 		$tempPaymentPlan[0]= 1000;
 		$tempPaymentPlan[1]= 1000;
 	//	print_r($this->selectedCourseDataDetail);
@@ -439,13 +450,7 @@ class Calculator{
 			$tuition[] = $value->tuitionFee ;	
 		}
 		$courseCnt =count($tuition);
-		if($courseCnt==2){
-		$tuition[$courseCnt-1] -= $this->fee->package;
-		}elseif ($courseCnt >=3) {
-			# code...
-			$tuition[$courseCnt-1] -= $this->fee->package1;
-		}
-
+		$tuition = $this->checkDiscount($tuition);
 
 
 		$tempCourseName[]= $courseName[0];
@@ -518,14 +523,9 @@ class Calculator{
 		foreach ($this->selectedCourseDataDetail as $key => $value) {
 			$tuition[] = $value->tuitionFee ;	
 		}
-
+		
 		$courseCnt =count($tuition);
-		if($courseCnt==2){
-		$tuition[$courseCnt-1] -= $this->fee->package;
-		}elseif ($courseCnt >=3) {
-			# code...
-			$tuition[$courseCnt-1] -= $this->fee->package1;
-		}
+		$tuition = $this->checkDiscount($tuition);
 
 		//$tempCourseName[]= $courseName[0];
 		$counter =1;
@@ -588,20 +588,9 @@ class Calculator{
 			$tuition[] = $value->tuitionFee ;	
 		}
 		//$this->error .= "hello cal4 2<br/>";
-		
-		// get course count;
-		
 		$courseCnt =count($tuition);
 		
-		
-		// deduct course special price.
-		
-		if($courseCnt==2){
-			$tuition[$courseCnt-1] -= $this->fee->package;
-		}elseif ($courseCnt >=3) {
-			# code...
-			$tuition[$courseCnt-1] -= $this->fee->package1;
-		}
+		$tuition = $this->checkDiscount($tuition);
 
 
 		$currentTution=0;
@@ -610,6 +599,7 @@ class Calculator{
 		$startDateOfFirstCourse = $startdate[$counter];
 		//$this->error .= "hello cal4 3<br/>";
 		$tmpDuedate= new DateTime();
+
 		foreach ($tuition as $value) {
 			$currentTution = $value;
 			$currentCourseName = $courseName[$counter];
@@ -633,11 +623,7 @@ class Calculator{
 					else if($paymentCounter ==2){
 						$tmpDuedate = $startDateOfFirstCourse->modify(LTSECONDPAYMENT);
 					}
-					else if($aPayment < 500){
-
-					} else if($paymentCounter ==0){
-						
-					}
+					
 					else 
 						$tmpDuedate = $tmpDuedate->modify(FOURWEEKS);
 						
@@ -666,6 +652,132 @@ class Calculator{
 			}	
 
 			$counter++;
+
+		}
+
+		$counter =0;
+		foreach ($tempPaymentDueDate as $key => $value) {
+			$outputPayment = new Outputform(TUITION, $value,$tempPaymentPlan[$counter]);
+			$this->paymentPlan[]=$outputPayment;
+			$counter++;
+		}
+		//print_r($this->paymentPlan);
+		foreach ($this->paymentPlan as $key => $value) {
+			# code...
+
+			$this->total += $value->amount;
+		}
+
+		
+		
+		//===================================================================================================================
+		 
+
+                
+	}
+
+
+	public function calculate5(){	
+		//$this->error .="hello cal4 1<br/>";
+		$tuition = array() ;
+		$startdate =array();
+		$courseName = array();
+		
+		$tempPaymentPlan = array();
+		$tempPaymentDueDate = array();
+		$tempCourseName = array();
+		$aPayment = $this->getNextPayment();
+		// get course name and its start date
+		
+		foreach ($this->selectedCourseNameNStartDate as $key => $value) {
+			
+			$courseName[] = $value[0];
+			$startdate[]= $this->strToDate($value[1]);
+
+		}
+
+		// get tuition fees and make an array
+
+		foreach ($this->selectedCourseDataDetail as $key => $value) {
+			$tuition[] = $value->tuitionFee ;	
+		}
+		//$this->error .= "hello cal4 2<br/>";
+		$courseCnt =count($tuition);
+		
+		$tuition = $this->checkDiscount($tuition);
+
+
+		$currentTution=0;
+		$counter = 0;
+		$paymentCounter = 0;
+		
+		$remain = 0;
+		//$this->error .= "hello cal4 3<br/>";
+		$tmpDuedate= new DateTime();
+		$currentStartDate = new DateTime();
+		foreach ($tuition as $value) {
+			$currentStartDate = $startdate[$counter];
+			$currentTution = $value;
+			$currentCourseName = $courseName[$counter];
+			if($remain != 0 && $count !=0){
+				$tempPaymentDueDate[]=$this->dateToString( $tmpDuedate->modify(FOURWEEKS));
+				$tempPaymentPlan[]=$remain;
+				$tempCourseName[]=$currentCourseName;
+				$currentTution-=$remain;
+			}
+			
+			if(!$counter  ) {
+				$tempPaymentDueDate[]=$this->today;
+				$tempCourseName[]= $currentCourseName;
+				$tempPaymentPlan[]= LTPCKFIRSTPAYMENT;
+				$currentTution-=LTPCKFIRSTPAYMENT;
+				$tuition[$counter]-=LTPCKFIRSTPAYMENT;
+				$paymentCounter++;
+
+			}
+			
+			if($currentTution > $aPayment ){
+				
+				while ($currentTution>0) {
+
+					
+					if($paymentCounter ==1){
+						$tmpDuedate = $currentStartDate->modify("-10 day");
+					}
+					else if($paymentCounter ==2){
+						$tmpDuedate = $currentStartDate->modify(LTSECONDPAYMENT);
+					}
+					
+					else 
+						$tmpDuedate = $tmpDuedate->modify(FOURWEEKS);
+						
+						
+					
+					
+					$tempPaymentDueDate[]=$this->dateToString($tmpDuedate);
+					$tempPaymentPlan[]=$aPayment;
+					$tempCourseName[]=$currentCourseName;
+					$paymentCounter++;
+					$currentTution-=$aPayment;
+					//$aPayment= $this->getNextPayment();
+
+					if($currentTution < $aPayment){
+						if($currentTution != 0){
+							$tempPaymentDueDate[]=$this->dateToString( $tmpDuedate->modify(FOURWEEKS));
+							$tempPaymentPlan[]=$currentTution;
+							$tempCourseName[]=$currentCourseName;
+							$remian = $currentTution-$aPayment;
+
+						}
+						break;
+					}
+				
+
+				}
+			}	
+
+			$counter++;
+			$paymentcounter=0;
 
 		}
 

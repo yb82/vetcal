@@ -70,7 +70,10 @@ else if(isset($_POST["createpayment"])){
 
 			
 		} else if($value[0]=="discountprice"){
+			$receive->setuseDiscountFlag(true);
 			$receive->setDiscountPrice($value[1]);
+			
+			
 		}
 		else {
 			$receive->setCourse($value[0],$value[1]);	

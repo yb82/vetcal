@@ -6051,4 +6051,90 @@ label.panel-block:hover {
   padding: 3rem 1.5rem 6rem;
 }
 
+
+  .coursename{
+    width: 280px;
+  }
+
+  .coursesection{
+    display: none;
+  }
+  .coursename {
+    border-color: whitesmoke;
+    background-color: #fffdf5;
+    border-radius: 3px;
+    margin-bottom: 5px;
+
+  }
+  .coursetitle{
+    background-color: #ffdd57;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  .coursedetail{
+
+    color: #3b3108;
+    border-radius: 3px;
+    border-color: #ffdd57;
+
+  }
+  .main{
+    margin: auto;
+    
+    
+    padding: 10px;
+  }
+  .items{
+    padding-right: 2px;
+    padding-left:  2px;
+    padding-top:  2px;
+    padding-bottom:  4px;
+  }
+  td.personalDetail{
+
+    width: 25%;
+    
+  }  
+
+  .personalDetail2{
+    padding:  6px;
+    width: 200px;
+    margin: 3px;
+  }
+
+  .address1{
+    padding:  6px;
+    width:250px;
+    margin: 3px;
+  }
+  .header{
+    text-align: left;
+    padding-left: 20px;
+    padding-top: 20px;
+  }
+  .selectbox{
+     height:255px;
+     width:310px;
+  }
+  .paymentoption{
+    width: 700px;
+  }
+  td.options{
+    width: 100px;
+    display: inline-block;    
+  }
+  td.options1{
+    width: 240px; 
+    display: inline-block;
+  }
+  td.options2{
+    width: 350px; 
+    display: inline-block;
+  }
+  .fee{
+    width: 50px;
+  }
+  section{border:1p solid white; padding: 5px; overflow: hidden;}
+  section > section {float: left;}
+  .incident{padding-left: 20px;}
+
 /*# sourceMappingURL=bulma.css.map */

@@ -16,86 +16,7 @@ $data = new Datahandler();
 <link rel ="stylesheet" type="text/css" href="./css/calculator1.css">
 
 
-<style type="text/css">
 
-  .coursename{
-    width: 280px;
-  }
-
-  .coursesection{
-    display: none;
-  }
-  .coursename {
-    border-color: whitesmoke;
-    background-color: #fffdf5;
-    border-radius: 3px;
-    margin-bottom: 5px;
-
-  }
-  .coursetitle{
-    background-color: #ffdd57;
-    color: rgba(0, 0, 0, 0.7);
-  }
-  .coursedetail{
-
-    color: #3b3108;
-    border-radius: 3px;
-    border-color: #ffdd57;
-
-  }
-  .main{
-    margin: auto;
-    
-    
-    padding: 10px;
-  }
-  .items{
-    padding-right: 2px;
-    padding-left:  2px;
-    padding-top:  2px;
-    padding-bottom:  4px;
-  }
-  td.personalDetail{
-
-    width: 25%;
-    
-  }  
-
-  .personalDetail2{
-    padding:  6px;
-    width: 200px;
-    margin: 3px;
-  }
-
-  .address1{
-    padding:  6px;
-    width:250px;
-    margin: 3px;
-  }
-  .header{
-    text-align: left;
-    padding-left: 20px;
-    padding-top: 20px;
-  }
-  .selectbox{
-	   height:255px;
-	   width:310px;
-  }
-  .paymentoption{
-    width: 700px;
-  }
-  td.options{
-    width: 100px;
-  }
-  .fee{
-    width: 50px;
-  }
-  section{border:1p solid white; padding: 5px; overflow: hidden;}
-  section > section {float: left;}
-  .incident{padding-left: 20px;}
-
-
-</style>
 
 <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -136,9 +57,9 @@ $data = new Datahandler();
       <tr>
         <td class="options"><input type="radio" name="Paymentoption" value="1" id="option1" checked="true">&nbsp;Option 1</td>
         <td class="options"><input type="radio" name="Paymentoption" id="option2" value="2">&nbsp;Option 2</td>
-        <td class="options"> <input type="radio" name="Paymentoption" id="option42" value="5" /> <lable id="option41"  >Latin package</lable></td>
+        <td class="options1"> <input type="radio" name="Paymentoption" id="option42" value="5" /> <lable id="option41"  >Latin package</lable></td>
          <td class="options"> <input type="radio"  id="option4"  name="Paymentoption" value="4" > <lable id="option41"  class="options" >&nbsp;Latin</lable></td>  </tr>
-        <td class="options"><input type="radio"  id="option3" style="display: none;" name="Paymentoption" value="3" ><lable id="option31" style="display: none;">&nbsp;Option 3</lable></td>
+        <td class="options"><input type="radio"  id="option3" style="display: none; " name="Paymentoption" value="3" ><lable id="option31" style="display: none;">&nbsp;Option 3</lable></td>
        
           
       </tr>
@@ -147,7 +68,7 @@ $data = new Datahandler();
         <td class="options"><input type="checkbox" name="waive" value="enrol" id="waiveE" >EW</td>
         <td class="options"><input type="checkbox" name="waive" value="material" id="waiveM" >MW</td>
         <td class="options"><input type="checkbox" name="waive" value="paymentplan" id="waiveP" >PFW</td>
-        <td class="options" style="display: none" id="discounttd"><input type="checkbox" name="discount" value="discount" id="discount" >Custom Discount<input type="text" name="discountprice"  id="discountprice" disabled="disabled" ></td>
+        <td class="options2" style="display: none" id="discounttd"><input type="checkbox" name="discount" value="discount" id="discount" >Custom Discount<input type="text" name="discountprice"  id="discountprice" disabled="disabled" ></td>
         
       </tr>
     <!-- <tr><td><input type="checkbox" name="EnrolmentFeeCheck" value="1" id="enrolFee" >Enrolment Fee &nbsp;<input type ="text" name="EnrolFee" class="fee"></td><td><input type="checkbox" name="MaterialFeeCheck" value="1" id="materialFee" >Material Fee&nbsp;<input type ="text" name="MaterialFee" class="fee"></td><td></td></tr> -->

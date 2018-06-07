@@ -237,11 +237,16 @@ $(document).ready(function() {
   }
   
   if(option_waive.length == 0){
-  courseData.push(new Array("waiveoption",0));
+    courseData.push(new Array("waiveoption",0));
   } else courseData.push(new Array("waiveoption",option_waive));
 
   if($("#discountprice").val().length !=0){
     courseData.push(new Array("discountprice",$("#discountprice").val()));
+  } else if($("#discountprice").val().length ==0 && $("#option42").prop("checked")){
+
+    alert("Discount must be entered!");
+    $("#discountprice").focus();
+    return 0;
   }
 
   $.post( "./update.php", { createpayment : courseData })

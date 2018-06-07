@@ -15,16 +15,15 @@ class Receivedata{
 	private $materialFeeWaive = false;
 	private $userEnrolFeeFlag = false;
 	private $userMaterialFeeFlag = false;
-	private $userDiscountFlag = flase;
+	private $userDiscountFlag = false;
 	private $enrolmentFee ;
 	
 	private $materialFee ;
-		//private $finishdates;
+
 	private $studentDetail;
 	private $discountPrice;
 
 
-		//private $flag1 = flase, $flage2 = false, $flag3=false, $flag4= false, $flag5=false, $flag6=false;
 
 	public function __construct(){
 		$this->courseData = Array();
@@ -288,7 +287,7 @@ class Receivedata{
 		return $this->studentDetail;
 	}
 	public function getDiscount(){
-		return $this->discount;
+		return $this->discountPrice;
 	}
 	public function setCourse($courseName,$courseStartdate){
 			$this->courseData[] = Array($courseName, $courseStartdate);
@@ -302,14 +301,17 @@ class Receivedata{
 					$this->materialFeeWaive = true;
 				} else if($waiveOption == "paymentplan"){
 					$this->paymentPlanFeeWaive= true;
-				} else if($waiveOption = "discount") {
-					$this->userDiscountFlag = true;
-
-				}
+				} 
 			
 	}
 	public function setDiscountPrice($discount){
 		$this->discountPrice = $discount;
+	}
+	public function setuseDiscountFlag($flag){
+		 $this->userDiscountFlag = $flag;
+	}
+	public function getuseDiscountFlag(){
+		return $this->userDiscountFlag;
 	}
 
 }
