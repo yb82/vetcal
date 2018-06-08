@@ -17,6 +17,7 @@ define( "SECONDPAYMENTDATE", "-17 day");
 define( "LTSECONDPAYMENT", "+38 day");
 
 define("LTPCKFIRSTPAYMENT",250);
+define("LATINPAYMENT",500);
 
 class Calculator{
 	private $fee;
@@ -558,7 +559,7 @@ class Calculator{
 
 	}
 	private function getNextPayment(){
-		return 500;
+		return LATINPAYMENT;
 	}
 
 
@@ -686,8 +687,11 @@ class Calculator{
 		$tempPaymentPlan = array();
 		$tempPaymentDueDate = array();
 		$tempCourseName = array();
-		$aPayment = $this->getNextPayment();
-		// get course name and its start date
+		$aPayment = LATINPAYMENT;
+		
+
+
+
 		
 		foreach ($this->selectedCourseNameNStartDate as $key => $value) {
 			
@@ -701,10 +705,14 @@ class Calculator{
 		foreach ($this->selectedCourseDataDetail as $key => $value) {
 			$tuition[] = $value->tuitionFee ;	
 		}
-		//$this->error .= "hello cal4 2<br/>";
+		
 		$courseCnt =count($tuition);
 		
 		$tuition = $this->checkDiscount($tuition);
+
+		//first payment takes second course $250;
+		//$tuition[0]-=LTPCKFIRSTPAYMENT;
+		$tuition[1]-=LATINPAYMENT;
 
 
 		$currentTution=0;
@@ -712,30 +720,29 @@ class Calculator{
 		$paymentCounter = 0;
 		
 		$remain = 0;
-		//$this->error .= "hello cal4 3<br/>";
+
+		$tempPaymentDueDate[]=$this->today;
+		$tempCourseName[]= $courseName[$counter];
+		$tempPaymentPlan[]= $aPayment;
+		$paymentCounter++;
+
+		
+		
 		$tmpDuedate= new DateTime();
 		$currentStartDate = new DateTime();
+		//$remainDate = new DateTime();
 		foreach ($tuition as $value) {
 			$currentStartDate = $startdate[$counter];
 			$currentTution = $value;
 			$currentCourseName = $courseName[$counter];
 			if($remain != 0 && $count !=0){
-				$tempPaymentDueDate[]=$this->dateToString( $tmpDuedate->modify(FOURWEEKS));
+				$tempPaymentDueDate[]=$tmpDuedate;
 				$tempPaymentPlan[]=$remain;
 				$tempCourseName[]=$currentCourseName;
 				$currentTution-=$remain;
 			}
 			
-			if(!$counter  ) {
-				$tempPaymentDueDate[]=$this->today;
-				$tempCourseName[]= $currentCourseName;
-				$tempPaymentPlan[]= LTPCKFIRSTPAYMENT;
-				$currentTution-=LTPCKFIRSTPAYMENT;
-				$tuition[$counter]-=LTPCKFIRSTPAYMENT;
-				$paymentCounter++;
-
-			}
-			
+						
 			if($currentTution > $aPayment ){
 				
 				while ($currentTution>0) {
@@ -766,7 +773,7 @@ class Calculator{
 							$tempPaymentDueDate[]=$this->dateToString( $tmpDuedate->modify(FOURWEEKS));
 							$tempPaymentPlan[]=$currentTution;
 							$tempCourseName[]=$currentCourseName;
-							$remian = $currentTution-$aPayment;
+							$remian =$aPayment- $currentTution;
 
 						}
 						break;
@@ -777,7 +784,7 @@ class Calculator{
 			}	
 
 			$counter++;
-			$paymentcounter=0;
+			$paymentCounter=1;
 
 		}
 
